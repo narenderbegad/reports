@@ -156,21 +156,63 @@
         .card-3d {
             transform-style: preserve-3d;
             transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-3d::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #6366f1, #8b5cf6, #06b6d4, #f59e0b);
+            background-size: 400% 400%;
+            border-radius: 18px;
+            z-index: -1;
+            animation: borderGlow 4s ease infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .card-3d:hover::before {
+            opacity: 1;
         }
         
         .card-3d:hover {
-            transform: rotateY(5deg) rotateX(5deg) translateZ(20px);
+            transform: rotateY(5deg) rotateX(5deg) translateZ(20px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3), 0 0 60px rgba(139, 92, 246, 0.2);
+        }
+        
+        @keyframes borderGlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
         
         .btn-glow {
-            background: linear-gradient(45deg, #6366f1, #8b5cf6);
+            background: linear-gradient(45deg, #6366f1, #8b5cf6, #06b6d4);
+            background-size: 200% 200%;
             box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
             transition: all 0.3s ease;
+            animation: gradientShift 3s ease infinite, pulseGlow 2s ease-in-out infinite alternate;
         }
         
         .btn-glow:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.6);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.8), 0 0 40px rgba(139, 92, 246, 0.6);
+            animation-duration: 1s;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4), 0 0 20px rgba(139, 92, 246, 0.2); }
+            100% { box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6), 0 0 30px rgba(139, 92, 246, 0.4); }
         }
         
         .text-gradient {
@@ -226,6 +268,56 @@
             font-size: 2.5rem;
             font-weight: 800;
             color: #6366f1;
+            text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+            animation: counterGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes counterGlow {
+            0% { text-shadow: 0 0 20px rgba(99, 102, 241, 0.5), 0 0 30px rgba(139, 92, 246, 0.3); }
+            100% { text-shadow: 0 0 30px rgba(99, 102, 241, 0.8), 0 0 40px rgba(139, 92, 246, 0.5); }
+        }
+        
+        .floating-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: floatParticle 8s linear infinite;
+        }
+        
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        .glow-text {
+            animation: textGlow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
+            100% { text-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 0 0 40px rgba(99, 102, 241, 0.3); }
         }
     </style>
 </head>
@@ -238,6 +330,19 @@
             <div class="shape w-40 h-40 bg-accent rounded-full"></div>
         </div>
         
+        <div class="floating-particles">
+            <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+            <div class="particle" style="left: 20%; animation-delay: 1s;"></div>
+            <div class="particle" style="left: 30%; animation-delay: 2s;"></div>
+            <div class="particle" style="left: 40%; animation-delay: 3s;"></div>
+            <div class="particle" style="left: 50%; animation-delay: 4s;"></div>
+            <div class="particle" style="left: 60%; animation-delay: 5s;"></div>
+            <div class="particle" style="left: 70%; animation-delay: 6s;"></div>
+            <div class="particle" style="left: 80%; animation-delay: 7s;"></div>
+            <div class="particle" style="left: 90%; animation-delay: 0.5s;"></div>
+            <div class="particle" style="left: 15%; animation-delay: 1.5s;"></div>
+        </div>
+        
         <div class="relative z-10 max-w-6xl mx-auto px-4 text-center text-white">
             <!-- Animated Logo -->
             <div class="mb-8 animate-bounce-slow">
@@ -246,9 +351,8 @@
             
             <!-- Animated Title -->
             <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
-                <span class="block text-transparent bg-gradient-to-r from-blue-800 to-purple-800 bg-clip-text">AishNar Groups</span>
-
-                <span class="block mt-2">Reports</span>
+                <span class="block text-gradient bg-white bg-clip-text text-transparent glow-text">AishNar Groups</span>
+                <span class="block mt-2 glow-text">Reports</span>
             </h1>
             
             <!-- Animated Tagline -->
@@ -361,9 +465,9 @@
                         <p class="text-gray-600 mb-6 leading-relaxed">
                             Discover the most revolutionary AI tools that are transforming businesses worldwide. Complete analysis by <strong>AishNar Groups</strong> with Indian market insights and implementation strategies.
                         </p>
-                        <button class="btn-glow text-white px-6 py-3 rounded-lg font-medium w-full">
+                        <a href="https://narenderbegad.github.io/ai-report-2025/" target="_blank" class="btn-glow text-white px-6 py-3 rounded-lg font-medium w-full inline-block text-center">
                             📖 Read Full Report
-                        </button>
+                        </a>
                     </div>
                 </div>
 
@@ -387,9 +491,9 @@
                         <p class="text-gray-600 mb-6 leading-relaxed">
                             Explore untapped opportunities and emerging trends specifically curated by <strong>Aish Nar</strong> team for the Indian market and economy. Exclusive business insights from <em>AishNar Groups</em>.
                         </p>
-                        <button class="btn-glow text-white px-6 py-3 rounded-lg font-medium w-full">
+                        <a href="https://narenderbegad.github.io/aishnar-report/" target="_blank" class="btn-glow text-white px-6 py-3 rounded-lg font-medium w-full inline-block text-center">
                             📖 Read Full Report
-                        </button>
+                        </a>
                     </div>
                 </div>
 
@@ -624,27 +728,15 @@
 
         counters.forEach(counter => counterObserver.observe(counter));
 
-        // Report button functionality
-        document.querySelectorAll('.btn-glow').forEach((button, index) => {
+        // Report button functionality - Links are now handled by anchor tags
+        // First two reports have working links, others show coming soon alert
+        document.querySelectorAll('.blur-card button').forEach((button) => {
             button.addEventListener('click', function() {
-                if (index < 2) { // First two reports are available
-                    alert(`Opening ${index === 0 ? 'Best AI Tools of 2025' : 'Best Future-Forward Business Insights for India'} report...`);
-                } else {
-                    alert('This report is coming soon! Subscribe to get notified when it\'s published.');
-                }
+                alert('This report is coming soon! Send an email to AishNar.official@gmail.com to get notified when it\'s published.');
             });
         });
 
-        // Newsletter subscription
-        document.querySelector('button[type="button"]').addEventListener('click', function() {
-            const email = document.querySelector('input[type="email"]').value;
-            if (email) {
-                alert('Thank you for subscribing! You\'ll be notified about new reports.');
-                document.querySelector('input[type="email"]').value = '';
-            } else {
-                alert('Please enter a valid email address.');
-            }
-        });
+        // Email subscription is now handled by mailto link
 
         // Add parallax effect to floating shapes
         window.addEventListener('scroll', () => {
@@ -656,5 +748,5 @@
             });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9663181827645518',t:'MTc1MzY5MjI2MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9663477ab5935469',t:'MTc1MzY5NDIwMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
